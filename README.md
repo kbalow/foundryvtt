@@ -1,2 +1,2 @@
 # foundryvtt
-Provision a Foundry VTT server up in AWS
+Provision a Foundry VTT server in AWS
