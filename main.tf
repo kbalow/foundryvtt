@@ -26,6 +26,10 @@ resource "aws_instance" "webVm" {
   }
 }
 
+resource "aws_eip" "eip" {
+  vpc = true
+}
+
 resource "aws_route53_record" "www" {
   zone_id = "Z215KKUHO0EF1N"
   name    = "${var.record_name}"
