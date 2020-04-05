@@ -41,6 +41,6 @@ resource "aws_route53_record" "www" {
 }
 
 output "instance_ip_addr" {
-  value       = "${aws_instance.webVm.public_ip}"
+  value       = "${aws_instance.foundry.public_ip}"
   description = "AWS Web IP"
 }
