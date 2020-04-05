@@ -29,6 +29,7 @@ resource "aws_instance" "foundry" {
 resource "aws_eip" "eip" {
   instance = "${aws_instance.foundry.id}"
   vpc = true
+  cidr_block = "0.0.0.0/0"
 }
 
 resource "aws_route53_record" "www" {
