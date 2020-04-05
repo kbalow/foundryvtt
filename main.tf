@@ -27,6 +27,7 @@ resource "aws_instance" "foundry" {
 }
 
 resource "aws_eip" "eip" {
+  instance = "${aws_instance.foundry.id}"
   vpc = true
 }
 
