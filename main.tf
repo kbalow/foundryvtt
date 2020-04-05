@@ -1,18 +1,18 @@
 provider "aws" {
   profile    = "default"
-  region     = "${var.aws_region}"
+  region     = "us-east-2"
 }
 
-resource "aws_instance" "webVm" {
+resource "aws_instance" "foundry" {
   connection {
     user = "ubuntu"
     host = "${self.public_ip}"
-    private_key = "${file(var.aws_private_key_path)}"
+    private_key = "${var.foundrypem}"
   }
-  ami           = "${var.aws_ami}"
-  instance_type = "${var.aws_vm_size}"
+  ami           = "ami-07ebfd5b3428b6f4d"
+  instance_type = "t2.micro"
   security_groups = ["web_only","ssh_only"]
-  key_name = "${var.aws_key_name}"
+  key_name = "foundry"
   tags = {
       Name = "webserver"
       Owner = "kbalow"
