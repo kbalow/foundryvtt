@@ -9,7 +9,7 @@ module "vpc" {
   version = "2.21.0"
 
   name = "foundry_vtt"
-  cidr = "0.0.0.0/0"
+  #cidr = "0.0.0.0/0"
 
   #azs             = var.vpc_azs
   #private_subnets = var.vpc_private_subnets
