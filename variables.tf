@@ -1,1 +1,1 @@
-variable "foundrypem" {}
+variable "foundry_pem" {}

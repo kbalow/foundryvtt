@@ -7,7 +7,7 @@ resource "aws_instance" "foundry" {
   connection {
     user = "ubuntu"
     host = "self.public_ip"
-    private_key = "${var.foundrypem}"
+    private_key = "${var.foundry_pem}"
   }
   ami           = "ami-07ebfd5b3428b6f4d"
   instance_type = "t2.micro"
