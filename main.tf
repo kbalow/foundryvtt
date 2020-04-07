@@ -6,7 +6,7 @@ provider "aws" {
 resource "aws_instance" "foundry" {
   connection {
     user = "ubuntu"
-    host = "${self.public_ip}"
+    host = "self.public_ip"
     private_key = "${var.foundrypem}"
   }
   ami           = "ami-07ebfd5b3428b6f4d"
@@ -29,12 +29,12 @@ resource "aws_instance" "foundry" {
 resource "aws_eip" "eip" {
   instance = "${aws_instance.foundry.id}"
   vpc = true
-  cidr_block = "0.0.0.0"
+  #cidr_block = "0.0.0.0"
 }
 
 resource "aws_route53_record" "www" {
   zone_id = "Z215KKUHO0EF1N"
-  name    = "${var.record_name}"
+  name    = "foundry2.balow.me" ##
   type    = "A"
   ttl     = "300"
   records = ["${aws_eip.eip.public_ip}"]
