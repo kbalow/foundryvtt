@@ -22,7 +22,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "foundry" {
   connection {
     user = "ubuntu"
-    host = "self.public_ip"
+    host = aws_instance.foundry.public_ip
     private_key = var.foundry_pem
   }
   ami           = data.aws_ami.ubuntu.id
@@ -30,7 +30,7 @@ resource "aws_instance" "foundry" {
   security_groups = ["ssh","http_https"]
   key_name = "foundry_vtt"
   tags = {
-      Name = "foundry_server"
+      Name = "foundry"
       Owner = "kbalow"
     }
   provisioner "remote-exec" {
