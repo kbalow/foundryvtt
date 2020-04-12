@@ -13,7 +13,7 @@ resource "aws_instance" "foundry" {
   }
   ami           = "ami-07ebfd5b3428b6f4d"
   instance_type = "t2.micro"
-  security_groups = ["web_only","ssh_only"]
+  #security_groups = ["web_only","ssh_only"]
   key_name = "foundry"
   tags = {
       Name = "webserver"
@@ -29,7 +29,7 @@ resource "aws_instance" "foundry" {
 }
 
 resource "aws_eip" "eip" {
-  instance = "${aws_instance.foundry.id}"
+  instance = aws_instance.foundry.id
   vpc = true
   #cidr_block = "0.0.0.0"
 }
