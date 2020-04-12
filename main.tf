@@ -36,8 +36,13 @@ resource "aws_instance" "foundry" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get -y update",
-      "sudo apt-get -y install nginx",
+      "sudo apt install -y libssl-dev",
+      "curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -",
+      "sudo apt install -y nodejs nginx",
       "sudo service nginx start",
+      "mkdir -p /home/ubuntu/{foundryvtt,foundrydata}",
+      "wget ${var.foundry_link} -O foundryvtt.zip",
+      "unzip foundryvtt.zip",
     ]
   }
 }
