@@ -49,6 +49,7 @@ resource "aws_instance" "foundry" {
       "sudo service nginx start",
       "node resources/app/main.js --dataPath=$HOME/foundrydata",
       "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu",
+      "pm2 startup"
       "pm2 start /home/ubuntu/foundry/resources/app/main.js --name \"foundry\" -- --port=8080",
     ]
   }
@@ -61,8 +62,8 @@ resource "aws_eip" "eip" {
 }
 
 resource "aws_route53_record" "foundry" {
-  zone_id = "${var.hosted_zone_id}"
-  name    = "${var.hosted_zone_record_name}"
+  zone_id = var.hosted_zone_id
+  name    = var.hosted_zone_record_name
   type    = "A"
   ttl     = "300"
   records = ["${aws_eip.eip.public_ip}"]
