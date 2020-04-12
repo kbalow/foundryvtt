@@ -28,7 +28,7 @@ resource "aws_instance" "foundry" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   security_groups = ["ssh","http_https"]
-  key_name = "foundry"
+  key_name = "foundry_vtt"
   tags = {
       Name = "foundry_server"
       Owner = "kbalow"
