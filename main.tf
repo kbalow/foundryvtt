@@ -48,8 +48,8 @@ resource "aws_eip" "eip" {
   #cidr_block = "0.0.0.0"
 }
 
-resource "aws_route53_record" "www" {
-  zone_id = "Z215KKUHO0EF1N"
+resource "aws_route53_record" "foundry" {
+  zone_id = "Z10007922NRYP4XPDOX31"
   name    = "foundry2.balow.me" ##
   type    = "A"
   ttl     = "300"
