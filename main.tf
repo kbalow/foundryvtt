@@ -48,8 +48,8 @@ resource "aws_instance" "foundry" {
       "unzip foundryvtt.zip",
       "sudo service nginx start",
       "node resources/app/main.js --dataPath=$HOME/foundrydata",
-      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu"
-      "pm2 start /home/ubuntu/foundry/resources/app/main.js --name "foundry" -- --port=8080"
+      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu",
+      "pm2 start /home/ubuntu/foundry/resources/app/main.js --name "foundry" -- --port=8080",
     ]
   }
 }
