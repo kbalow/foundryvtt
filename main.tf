@@ -1,8 +1,22 @@
 provider "aws" {
   profile    = "default"
-  region     = "us-east-1"
-  #access_key = var.aws_access_key_id
-  #secret_key = var.aws_secret_access_key
+  region     = "us-east-2"
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
 }
 
 resource "aws_instance" "foundry" {
@@ -11,12 +25,12 @@ resource "aws_instance" "foundry" {
     host = "self.public_ip"
     private_key = var.foundry_pem
   }
-  ami           = "ami-07ebfd5b3428b6f4d"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  #security_groups = ["web_only","ssh_only"]
+  security_groups = ["ssh","http_https"]
   key_name = "foundry"
   tags = {
-      Name = "webserver"
+      Name = "foundry_server"
       Owner = "kbalow"
     }
   provisioner "remote-exec" {
