@@ -35,14 +35,21 @@ resource "aws_instance" "foundry" {
     }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get -y update",
+      "sudo apt -y update",
       "sudo apt install -y libssl-dev",
-      "curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -",
-      "sudo apt install -y nodejs nginx",
-      "sudo service nginx start",
+      "curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -",
+      "sudo apt install -y nodejs", ##backticks?
+      "sudo apt install -y nginx unzip",
+      "sudo rm /etc/nginx/sites-enabled/default",
+      "sudo service nginx restart",
+      "sudo npm install pm2 -g",
       "mkdir -p /home/ubuntu/{foundryvtt,foundrydata}",
       "wget ${var.foundry_link} -O foundryvtt.zip",
       "unzip foundryvtt.zip",
+      "sudo service nginx start",
+      "node resources/app/main.js --dataPath=$HOME/foundrydata",
+      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu"
+      "pm2 start /home/ubuntu/foundry/resources/app/main.js --name "foundry" -- --port=8080"
     ]
   }
 }
@@ -54,8 +61,8 @@ resource "aws_eip" "eip" {
 }
 
 resource "aws_route53_record" "foundry" {
-  zone_id = "Z10007922NRYP4XPDOX31"
-  name    = "foundry2.balow.me" ##
+  zone_id = "${var.hosted_zone_id}"
+  name    = "${var.hosted_zone_record_name}"
   type    = "A"
   ttl     = "300"
   records = ["${aws_eip.eip.public_ip}"]
@@ -63,5 +70,5 @@ resource "aws_route53_record" "foundry" {
 
 output "instance_ip_addr" {
   value       = "${aws_instance.foundry.public_ip}"
-  description = "AWS Web IP"
+  description = "Foundry IP Address"
 }
