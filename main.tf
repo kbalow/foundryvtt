@@ -45,7 +45,7 @@ resource "aws_instance" "foundry" {
       "sudo npm install pm2 -g",
       "mkdir -p /home/ubuntu/foundryvtt",
       "mkdir -p /home/ubuntu/foundrydata",
-      "cd /home/ubuntu/foundryvtt"
+      "cd /home/ubuntu/foundryvtt",
       "wget ${var.foundry_link} -O foundryvtt.zip",
       "unzip foundryvtt.zip",
       "sudo service nginx start",
