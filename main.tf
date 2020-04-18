@@ -49,7 +49,7 @@ resource "aws_instance" "foundry" {
       "wget ${var.foundry_link} -O foundryvtt.zip",
       "unzip foundryvtt.zip",
       "sudo service nginx start",
-      "node main.js --port=30000 --world=myworld --dataPath=/local/data/foundryvtt"
+      "node main.js --port=30000 --world=myworld --dataPath=/local/data/foundryvtt",
     ]
   }
 }
