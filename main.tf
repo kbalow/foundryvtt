@@ -39,7 +39,7 @@ resource "aws_instance" "foundry" {
       "sudo apt install -y libssl-dev",
       "curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -",
       "sudo apt install -y nodejs", ##backticks?
-      "sudo apt install -y nginx unzip",
+      "sudo apt install -y nginx unzip systemd",
       "sudo rm /etc/nginx/sites-enabled/default",
       "sudo service nginx restart",
       "sudo npm install pm2 -g",
