@@ -49,8 +49,8 @@ resource "aws_instance" "foundry" {
       "wget ${var.foundry_link} -O foundryvtt.zip",
       "unzip foundryvtt.zip",
       "sudo service nginx start",
-      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu",
       "pm2 startup",
+      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu",
       "pm2 start /home/ubuntu/foundryvtt/resources/app/main.js --name \"foundry\" -- --port=30000",
     ]
   }
