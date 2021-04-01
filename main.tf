@@ -1,8 +1,3 @@
-provider "aws" {
-  profile    = "default"
-  region     = "us-east-2"
-}
-
 module "foundryvtt" {
   source                  = "Justinon/foundryvtt/aws"
   version                 = "0.0.2"
