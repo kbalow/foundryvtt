@@ -3,74 +3,12 @@ provider "aws" {
   region     = "us-east-2"
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
-resource "aws_instance" "foundry" {
-  connection {
-    user = "ubuntu"
-    host = aws_instance.foundry.public_ip
-    private_key = var.foundry_pem
-  }
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  security_groups = ["ssh","http_https","foundryvtt"]
-  key_name = "foundry_vtt"
-  tags = {
-      Name = "foundry"
-      Owner = "kbalow"
-    }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt -y update",
-      "sudo apt install -y libssl-dev",
-      "curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -",
-      "sudo apt install -y nodejs", ##backticks?
-      "sudo apt install -y nginx unzip systemd",
-      "sudo rm /etc/nginx/sites-enabled/default",
-      "sudo service nginx restart",
-      "sudo npm install pm2 -g",
-      "mkdir -p /home/ubuntu/foundryvtt",
-      "mkdir -p /home/ubuntu/foundrydata",
-      "cd /home/ubuntu/foundryvtt",
-      "wget ${var.foundry_link} -O foundryvtt.zip",
-      "unzip foundryvtt.zip",
-      "sudo service nginx start",
-      "pm2 startup",
-      "sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu",
-      "pm2 start /home/ubuntu/foundryvtt/resources/app/main.js --name \"foundry\" -- --port=30000",
-    ]
-  }
-}
-
-resource "aws_eip" "eip" {
-  instance = aws_instance.foundry.id
-  vpc = true
-  #cidr_block = "0.0.0.0"
-}
-
-resource "aws_route53_record" "foundry" {
-  zone_id = var.hosted_zone_id
-  name    = var.hosted_zone_record_name
-  type    = "A"
-  ttl     = "300"
-  records = ["${aws_eip.eip.public_ip}"]
-}
-
-output "instance_ip_addr" {
-  value       = "${aws_instance.foundry.public_ip}"
-  description = "Foundry IP Address"
+module "foundryvtt" {
+  source                  = "Justinon/foundryvtt/aws"
+  version                 = "0.0.2"
+  # insert the 4 required variables here
+  aws_account_id          = var.aws_account_id
+  aws_automation_role_arn = var.aws_automation_role_arn
+  foundry_password        = var.foundry_password
+  foundry_username        = var.foundry_username
 }

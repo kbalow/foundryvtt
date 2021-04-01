@@ -1,7 +1,7 @@
-variable "foundry_pem" {}
+variable "aws_account_id" {}
 
-variable "foundry_link" {}
+variable "aws_automation_role_arn" {}
 
-variable "hosted_zone_id" {}
+variable "foundry_password" {}
 
-variable "hosted_zone_record_name" {}
+variable "foundry_username" {}
